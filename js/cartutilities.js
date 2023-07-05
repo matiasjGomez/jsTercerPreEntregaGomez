@@ -176,25 +176,27 @@ renderProducts(db.bringRegister());
 function renderProducts(){
   const products = db.bringRegister();
   divProducts.innerHTML = "";
+  
   for (const product of products) {
     divProducts.innerHTML += `
-    <div class="container py-3 conTypo">
+    <div class="container py-3 conTypo containCards">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-lg-3">
           <div id="product" class="card mb-4 item">
             <img src="img/${product.image}" class="card-img-top" alt="totk">
             <div class="card-body">
               <h5 class="card-title">${product.name} <span class="badge bg-secondary">HOT</span></h5>
               <p class="card-text">
-              ${product.description}
+                ${product.description}
               </p>
               <h6 class="card-price">$${product.price}</h6>
               <a href="#" class="btn btnAdd" data-id="${product.id}">Agregar al carrito</a>
             </div>
           </div>
-          </div>
-          </div>
-    `
+        </div>
+      </div>
+    </div>
+    `;
   }
 
   //buttons for "agregar al carrito"

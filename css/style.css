@@ -413,5 +413,8 @@ body {
   .cart_actions button:nth-of-type(2){
     background-color: var(--accent-color);
   }
+  .openCartbtn{
+    z-index: 2;
+  }
 
   
