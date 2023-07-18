@@ -47,7 +47,7 @@ class dataBase{
 
   //it returns the array with all the "products" of our database
   async bringRegister() {
-    const response = await fetch("../json/products.json");
+    const response = await fetch("json/products.json");
     this.products = await response.json();
     return this.products;
   }
