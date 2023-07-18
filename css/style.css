@@ -1,4 +1,6 @@
+
 /*index animation*/
+
 
 body {
     padding: 0;
@@ -121,6 +123,17 @@ body {
 
   .dropdown-menu.custom-dropdown hr.dropdown-divider {
     background-color: rgb(255,65,54);
+  }
+
+  .navbar-toggler{
+    background-color: rgb(237,38,71);
+  }
+
+  .navbar-brand{
+    display: flex;
+    flex-wrap: wrap;
+    width: 90px;
+    height: 90px;
   }
 
   /* cards*/
@@ -250,7 +263,7 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
-    
+
   }
 
   .cart_header{
@@ -387,7 +400,7 @@ body {
     flex-direction: column;
     gap: 1rem;
     border-top: 1px solid  rgb(255,65,54);
-    box-shadow: 0 -5px 10px rgb(237,38,71)
+    box-shadow: 0 -5px 10px rgb(237,38,71);
   }
 
   .cart_actions .subtotal{
@@ -417,4 +430,10 @@ body {
     z-index: 2;
   }
 
+  #products {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+  }
   

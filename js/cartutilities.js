@@ -43,29 +43,29 @@ class dataBase{
   constructor(){
     this.products = [];
 
-    this.addRegister(1, "Legends of Zelda: Tears of the Kingdom", "Explora la vasta superficie y los cielos de Hyrule. Una épica aventura a través de la superficie y los cielos de Hyrule te espera en The Legend of Zelda™: Tears of the Kingdom, disponible exclusivamente para la consola Nintendo Switch™. En esta secuela del juego The Legend of Zelda: Breath of the Wild, decidirás tu propio camino a través de los extensos paisajes de Hyrule y las islas que flotan en los vastos cielos. ¿Podrás aprovechar el poder de las nuevas habilidades de Link para luchar contra las malévolas fuerzas que amenazan al reino?", "Nintendo Switch", "totk.jpg", 46900);
-
-    this.addRegister(2, "Diablo IV", "La legendaria serie RPG de acción regresa con Diablo IV. Esta espectacular evolución introduce un vasto nuevo mundo para explorar, lleno de promesas de aventuras interminables, demonios letales y botines legendarios. Descubre la tierra corrupta de Santuario mientras desciende a una nueva era de oscuridad. Lilith, hija de Mefisto, Señor del Odio, ha sido liberada del exilio y ahora su funesta influencia amenaza con consumir el mundo. Solo tú y las personas que te acompañan en la aventura se interponen entre Lilith y la ruina de Santuario. Explora Santuario en solitario o en compañía mientras avanzas en la fascinante campaña de Diablo IV, aceptando misiones, liberando ciudades y luchando contra jefes épicos", "XBOX Series S/X", "diabloiv.webp", 44776);
-
-    this.addRegister(3, "Street Fighter 6", "Sal a la calle con nuevas formas de jugar y luchar en la próxima evolución de la legendaria serie de lucha de Capcom. Street Fighter 6 es el próximo paso en la evolución de la serie de Street Fighter, e incluye innovadoras funcionalidades de jugabilidad, así como mejores gráficos para todos los aspectos del juego. Con el poder del exclusivo motor de Capcom, RE ENGINE, la experiencia de Street Fighter 6 abarca tres modos de juego diferentes: Fighting Ground, World Tour y Battle Hub. Tu camino para convertirte en un luchador mundial comienza aquí. Tu momento. Tu lucha.", "PS5", "sfvi.webp", 43699);
-
-    this.addRegister(4, "Mortal Kombat 1", "Una nueva era inicia. Está en nuestra sangre. Descubro el renacimiento del Universo de Mortal Kombat creado por el Dios del Fuego Liu Kang. Mortal Kombat 1 marca el comienzo de la nueva era de la icónica franquicia con un nuevo sistema de pelea, modos de juego, y Fatalities", "PS5", "MK1.jpg", 43000);
-    console.log(this.products);
-    
   }
-  //method who creates the objet "product" and pushes it into our array
-  addRegister(id, name, description, category, image, price){
-    const product = new Product(id, name, description, category, image, price);
-    this.products.push(product);
-  }
+
   //it returns the array with all the "products" of our database
-  bringRegister() {
+  async bringRegister() {
+    const response = await fetch("../json/products.json");
+    this.products = await response.json();
     return this.products;
   }
   //looks for our product by their id, if finds it, it returs as an object
   registerById(id){
     return this.products.find((product) => product.id == id);
   }
+
+  //looks for our product by their name
+  registerByName(browse) {
+    return this.products.filter((product) => product.name.toLowerCase().includes(browse));
+  }
+
+  //shows products by their category
+  registerByCategory(category) {
+    return this.products.filter((product) => product.category.toLowerCase() === category.toLowerCase());
+  }
+  
 
 }
 
@@ -168,20 +168,31 @@ const divProducts = document.querySelector("#products");
 const divCarrito = document.querySelector("#cart_items");
 const spancantidadProductos = document.querySelector("#cantidadProductos");
 const totalCarrito = document.querySelector("#subtotal_price");
+const searchbar = document.querySelector("#searchbar");
+const searching = document.querySelector("#searching");
+const botonesCategorias= document.querySelectorAll(".dropdown-item");
+
+botonesCategorias.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    const productsByCategory = db.registerByCategory(button.innerText);
+    renderProducts(productsByCategory);
+  })
+});
 
 //call to render products
-renderProducts(db.bringRegister());
+db.bringRegister().then((products) => renderProducts(products));
 
 //shows database register on our HTML
-function renderProducts(){
-  const products = db.bringRegister();
+function renderProducts(products){
+
   divProducts.innerHTML = "";
   
   for (const product of products) {
     divProducts.innerHTML += `
     <div class="container py-3 conTypo containCards">
       <div class="row">
-        <div class="col-md-6 col-lg-3">
+        <div>
           <div id="product" class="card mb-4 item">
             <img src="img/${product.image}" class="card-img-top" alt="totk">
             <div class="card-body">
@@ -206,13 +217,25 @@ function renderProducts(){
       event.preventDefault();
       const id = (button.dataset.id)
       const product = db.registerById(id);
-      console.log("estas agregando " + product.name);
+      //console.log("estas agregando " + product.name);
       carrito.agregar(product);
     });
   }
 }
 
+//search events
 
+searchbar.addEventListener("submit", (event)=> {
+  event.preventDefault();
+  const browse = searching.value;
+  renderProducts(db.registerByName(browse.toLowerCase()));
+});
+
+searching.addEventListener("keyup", (event)=> {
+  event.preventDefault();
+  const browse = searching.value;
+  renderProducts(db.registerByName(browse.toLowerCase()));
+});
 
 
 //object for our cart
