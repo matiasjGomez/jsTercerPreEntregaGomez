@@ -1,3 +1,10 @@
-simulación de E-commerce, con base de datos, storage y DOM para la tercer pre-entrega de la cursada.
+Simulación de E-commerce, con base de datos, storage y DOM.
 
-link para ver el sitio: https://matiasjgomez.github.io/jsTercerPreEntregaGomez/
+Link para ver el sitio: https://matiasjgomez.github.io/jsTercerPreEntregaGomez/
+
+Features:
+- Rendering de productos
+- Carrito de compras interactivo
+- Filtro por categoría
+- Filtro por búsqueda
+- Fetch para llamar los productos desde un archivo .json local
